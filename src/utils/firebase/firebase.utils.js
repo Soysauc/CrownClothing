@@ -13,11 +13,11 @@ import {
   getFirestore,
   doc,
   getDoc,
+  getDocs,
   setDoc,
   collection,
   writeBatch,
   query,
-  getDocs,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -72,6 +72,7 @@ export const getCategoriesAndDocuments = async () => {
     acc[title.toLowerCase()] = items;
     return acc;
   }, {});
+  return categoryMap;
 };
 
 export const createUserDocumentFromAuth = async (
