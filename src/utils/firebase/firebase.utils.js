@@ -13,21 +13,20 @@ import {
   getFirestore,
   doc,
   getDoc,
-  getDocs,
   setDoc,
   collection,
   writeBatch,
   query,
+  getDocs,
 } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCXTMMGp5Js8y9VTxIJ5OVRFsB5qzrgoLE",
-  authDomain: "crown-clothing-383e8.firebaseapp.com",
-  projectId: "crown-clothing-383e8",
-  storageBucket: "crown-clothing-383e8.appspot.com",
-  messagingSenderId: "547759593697",
-  appId: "1:547759593697:web:3ba7ad79d001300328bfa0",
-  measurementId: "G-MX4LB3FNSC",
+  apiKey: "AIzaSyDDU4V-_QV3M8GyhC9SVieRTDM4dbiT0Yk",
+  authDomain: "crwn-clothing-db-98d4d.firebaseapp.com",
+  projectId: "crwn-clothing-db-98d4d",
+  storageBucket: "crwn-clothing-db-98d4d.appspot.com",
+  messagingSenderId: "626766232035",
+  appId: "1:626766232035:web:506621582dab103a4d08d6",
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -48,10 +47,11 @@ export const db = getFirestore();
 
 export const addCollectionAndDocuments = async (
   collectionKey,
-  objectsToAdd
+  objectsToAdd,
+  field
 ) => {
-  const batch = writeBatch(db);
   const collectionRef = collection(db, collectionKey);
+  const batch = writeBatch(db);
 
   objectsToAdd.forEach((object) => {
     const docRef = doc(collectionRef, object.title.toLowerCase());
@@ -67,12 +67,7 @@ export const getCategoriesAndDocuments = async () => {
   const q = query(collectionRef);
 
   const querySnapshot = await getDocs(q);
-  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
-    const { title, items } = docSnapshot.data();
-    acc[title.toLowerCase()] = items;
-    return acc;
-  }, {});
-  return categoryMap;
+  return querySnapshot.docs.map((doc) => doc.data());
 };
 
 export const createUserDocumentFromAuth = async (
